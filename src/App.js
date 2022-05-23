@@ -200,7 +200,7 @@ function CountNumber({ start = 0, end = 1000, duration = 2 }) {
     return () => {
       // 혹시나 해당 라이브러리를 clean, clear 하는 함수가 있다면 여기서 호출
     };
-  }, [end]);
+  }, [start, end, duration]);
 
   return <span ref={spanRef} />;
 }
@@ -246,7 +246,7 @@ function useRecordsStatus() {
       addiDoneCount = goalCount - doneCount;
     }
 
-    if (addiDoneCount == 0) return;
+    if (addiDoneCount === 0) return;
 
     setDoneCount(doneCount + addiDoneCount);
     const newRecord = {
@@ -267,7 +267,7 @@ function useRecordsStatus() {
       return -1;
     }
 
-    return records.findIndex((record) => record.id == id);
+    return records.findIndex((record) => record.id === id);
   };
 
   const removeRecordById = (id) => {
@@ -306,7 +306,7 @@ function useRecordsStatus() {
   const findRecordById = (id) => {
     const index = findIndexById(id);
 
-    if (index == -1) return null;
+    if (index === -1) return null;
 
     return records[index];
   };
@@ -347,8 +347,6 @@ function RecordModal({
   saveRecord: _saveRecord,
   cancelRecord: _cancelRecord,
 }) {
-  const recordsStatus = useRecordsStatus();
-
   const [recordCount, setRecordCount] = useState(initialQuantity);
 
   useEffect(() => {
@@ -371,7 +369,7 @@ function RecordModal({
   };
 
   const saveRecord = () => {
-    if (recordCount == 0) return;
+    if (recordCount === 0) return;
 
     setRecordCount(0);
     status.close();
@@ -488,7 +486,7 @@ function MainPage() {
 
 // ## 히스토리 페이지관련 컴포넌트 시작
 function RecordListItem({ record, optionDrawerStatus }) {
-  const wiseSayingIndex = record.id % 5 == 0 ? record.id / 5 - 1 : null;
+  const wiseSayingIndex = record.id % 5 === 0 ? record.id / 5 - 1 : null;
 
   return (
     <li className="mt-6 sm:mt-8">
@@ -653,7 +651,7 @@ function HistoryPage() {
 
   const [sortIndex, setSortIndex] = useRecoilState(TodoList__sortIndexAtom);
 
-  if (recordsStatus.records.length == 0) {
+  if (recordsStatus.records.length === 0) {
     return (
       <>
         <div className="flex-1 flex justify-center items-center">
@@ -674,17 +672,17 @@ function HistoryPage() {
   }
 
   const getSortedRecords = () => {
-    if (sortIndex == 0) {
+    if (sortIndex === 0) {
       return [...recordsStatus.records].sort((a, b) => {
-        if (a.count == b.count) return 0;
+        if (a.count === b.count) return 0;
         return a.count < b.count ? 1 : -1;
       });
-    } else if (sortIndex == 1) {
+    } else if (sortIndex === 1) {
       return [...recordsStatus.records].sort((a, b) => {
-        if (a.count == b.count) return 0;
+        if (a.count === b.count) return 0;
         return a.count > b.count ? 1 : -1;
       });
-    } else if (sortIndex == 3) {
+    } else if (sortIndex === 3) {
       return [...recordsStatus.records].sort((a, b) => {
         return a.id > b.id ? 1 : -1;
       });
@@ -787,12 +785,12 @@ function App() {
             스쿼트 챌린지
           </NavLink>
           <div className="flex-1 self-stretch flex justify-end">
-            {location.pathname != "/history" && (
+            {location.pathname !== "/history" && (
               <NavLink className="select-none flex items-center" to="/history">
                 히스토리
               </NavLink>
             )}
-            {location.pathname == "/history" && (
+            {location.pathname === "/history" && (
               <NavLink className="select-none flex items-center" to="/main">
                 뒤로가기
               </NavLink>
